@@ -5,7 +5,6 @@ class CovidAlertSocialNetwork:
         self.G = graph
         self.tau = tau
         self.gamma = gamma
-        self.R0 = tau / gamma
     
     def calculate_infected_nodes(self):
         infected_nodes = EoN.get_infected_nodes(self.G, 
