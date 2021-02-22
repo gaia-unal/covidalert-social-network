@@ -81,6 +81,23 @@ class simulacion_sir():
         probabilidad_contagio = cont/Nsim
         return(probabilidad_contagio)
     
+     # funcion que calcula la probabilidad de contagio con el metodo recomendado por la libreria EoN
+    def probabilidad_contagio_sir(self, nodo, NpersonasI = 1, Nsim = 1000):
+        
+        nodo       = nodo[0]                # Nodo que se desea conocer
+        cont       = 0                      # Contador 
+        Nodospos   = list(self.G.nodes)     # Nodos que pueden realizar el contagio
+        Nodospos.pop(Nodospos.index(nodo))  
+        
+        for i in range(Nsim): 
+            sim   = EoN.fast_SIR(self.G,
+                                 self.tau, 
+                                 self.gamma,
+                                 initial_infecteds =  random.sample(Nodospos,NpersonasI),
+                                 return_full_data = True)
+            cont += sim.node_history(nodo)[1].count('I')
+        return(cont/Nsim)
+    
     # funcion para graficar la red 
     def dibujar_red(self):
         nx.draw(self.g, with_labels = True)
@@ -102,10 +119,13 @@ def crear_grafo(aristas):
 G          = crear_grafo(aristas) 
 simulacion = simulacion_sir(G,tau = 1.2, gamma = 1, infected = random.sample(G.nodes,1))
 
-# Estimacion de la probabilidad de contagio 
+# Estimacion de la probabilidad de contagio (los dos metodos generan resultados practicamente identicos, se recomienda usar el metodo 2)
 nodo_principal = [3005105534]
+# Metodo 1 
 p_contagio     = simulacion.probabildad_contagio(nodo_principal, NpersonasI = 1, Nsim = 1000)
 print('La probabilidad de contagio es',p_contagio)
 
-
+# Metodo 2 
+p_contagio2 = simulacion.probabilidad_contagio_sir(nodo_principal, NpersonasI = 1, Nsim = 1000)
+print('La probabilidad de contagio es',p_contagio2)
 
