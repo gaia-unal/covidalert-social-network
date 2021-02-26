@@ -18,7 +18,7 @@ class CovidAlertSocialNetwork:
         
         for _ in range(n_sim): 
             sim   = EoN.fast_SIR(self.G, self.tau, self.gamma,
-                                 initial_infecteds=self.initial_infecteed_nodes,
+                                 initial_infecteds=self.initial_infected_nodes,
                                  return_full_data=True)
 
             cont += sim.node_history(node)[1].count('I')
