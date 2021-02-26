@@ -15,6 +15,7 @@ class CovidAlertSocialNetwork:
     def calculate_infection_probability_sir_method(self, node, n_sim = 1000):
         available_nodes_for_infection = list(self.G.nodes)
         available_nodes_for_infection.pop(available_nodes_for_infection.index(node))
+        cont = 0
         
         for _ in range(n_sim): 
             sim   = EoN.fast_SIR(self.G, self.tau, self.gamma,
