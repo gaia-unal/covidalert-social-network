@@ -1,10 +1,10 @@
 import EoN
 
 class CovidAlertSocialNetwork:
-    def __init__(self, graph, tau, gamma):
+    def __init__(self, graph, ro=1.35, gamma=0.975):
         self.G = graph
-        self.tau = tau
         self.gamma = gamma
+        self.tau = gamma * ro
     
     def calculate_infected_nodes(self):
         infected_nodes = EoN.get_infected_nodes(self.G, 
@@ -12,7 +12,7 @@ class CovidAlertSocialNetwork:
 
         return infected_nodes
     
-    def calculate_infection_probability_sir_method(self, node, n_sim = 1000):
+    def calculate_infection_probability_sir_method(self, node, n_sim=1000):
         available_nodes_for_infection = list(self.G.nodes)
         available_nodes_for_infection.pop(available_nodes_for_infection.index(node))
         cont = 0
